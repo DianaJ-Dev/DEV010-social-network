@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 
-import { entrarConGoogle } from '../FirebaseFn.js'
+import { UsuarioConSesionActiva, entrarConGoogle, enviarInformacionCorreo } from '../FirebaseFn.js'
 import { ingresarConCorreoContrasena} from '../FirebaseFn.js'
+
 
 function login (navigateTo) {
   const sectionOne = document.createElement('section')
@@ -20,6 +21,7 @@ function login (navigateTo) {
   const inputPass = document.createElement('input')
   inputPass.placeholder = 'Ingresa Contraseña'
   inputPass.classList.add('inputPass')
+  
   // BOTON INGRESA
   const buttonLogin = document.createElement('button')
   buttonLogin.textContent = 'Ingresar'
@@ -28,21 +30,41 @@ function login (navigateTo) {
     const emailValue =inputEmail.value; // me guarda informacion en variable
     const passwordValue = inputPass.value;
     
-    console.log(emailValue)
-    console.log(passwordValue)
-    ingresarConCorreoContrasena(emailValue,passwordValue)
+    UsuarioConSesionActiva (emailValue, passwordValue)
     .then((userCredential) => {
-      // Signed in 
+      // El usuario ha iniciado sesión con éxito
       const user = userCredential.user;
-      // ...
+      const uid = user.uid;
+      // Aquí puedes hacer lo que necesites con el usuario autenticado
+      console.log('Usuario autenticado con éxito:', user);
+      navigateTo('/programmingWall')
     })
     .catch((error) => {
+      // Manejar cualquier error que ocurra durante el inicio de sesión
       const errorCode = error.code;
       const errorMessage = error.message;
-      // ..
+      console.error('Error al iniciar sesión:', errorCode, errorMessage);
     });
 
-  })
+    enviarInformacionCorreo(emailValue, passwordValue)
+    .then(() => {
+      // Correo electrónico de verificación enviado con éxito
+    })
+    .catch(error => {
+      // Handle errors (por ejemplo, el usuario no está autenticado)
+    });
+    
+});
+
+
+
+
+
+
+
+  
+  
+
 
   
   // BOTON INGRESA CON GOOGLE
@@ -62,6 +84,36 @@ function login (navigateTo) {
         alert('revisa tus datos')
       })
   })
+
+
+  /*const buttonLogin = document.createElement('button')
+  buttonLogin.textContent = 'Ingresar'
+  buttonLogin.classList.add('btn-login')
+  buttonLogin.addEventListener('click', () => {
+    const emailValue =inputEmail.value; // me guarda informacion en variable
+    const passwordValue = inputPass.value;
+    
+    console.log(emailValue)
+    console.log(passwordValue)
+    ingresarConCorreoContrasena(emailValue,passwordValue)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    }); 
+    enviarInformacionCorreo(emailValue, passwordValue)
+    .then(() => {
+      // Email verification sent!
+      // ...
+    });
+  })*/
+
+  
 
   sectionOne.append(title, inputEmail, inputPass, buttonLogin, buttonGoogle) // append agrega nuevo elemento al contenedor en este caso agrega tittle a section que es el principal
   return sectionOne
