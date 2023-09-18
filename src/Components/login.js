@@ -22,49 +22,6 @@ function login (navigateTo) {
   inputPass.placeholder = 'Ingresa Contraseña'
   inputPass.classList.add('inputPass')
   
-  // BOTON INGRESA
-  const buttonLogin = document.createElement('button')
-  buttonLogin.textContent = 'Ingresar'
-  buttonLogin.classList.add('btn-login')
-  buttonLogin.addEventListener('click', () => {
-    const emailValue =inputEmail.value; // me guarda informacion en variable
-    const passwordValue = inputPass.value;
-    
-    UsuarioConSesionActiva (emailValue, passwordValue)
-    .then((userCredential) => {
-      // El usuario ha iniciado sesión con éxito
-      const user = userCredential.user;
-      const uid = user.uid;
-      // Aquí puedes hacer lo que necesites con el usuario autenticado
-      console.log('Usuario autenticado con éxito:', user);
-      navigateTo('/programmingWall')
-    })
-    .catch((error) => {
-      // Manejar cualquier error que ocurra durante el inicio de sesión
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error('Error al iniciar sesión:', errorCode, errorMessage);
-    });
-
-    enviarInformacionCorreo(emailValue, passwordValue)
-    .then(() => {
-      // Correo electrónico de verificación enviado con éxito
-    })
-    .catch(error => {
-      // Handle errors (por ejemplo, el usuario no está autenticado)
-    });
-    
-});
-
-
-
-
-
-
-
-  
-  
-
 
   
   // BOTON INGRESA CON GOOGLE
@@ -86,7 +43,7 @@ function login (navigateTo) {
   })
 
 
-  /*const buttonLogin = document.createElement('button')
+  const buttonLogin = document.createElement('button')
   buttonLogin.textContent = 'Ingresar'
   buttonLogin.classList.add('btn-login')
   buttonLogin.addEventListener('click', () => {
@@ -111,7 +68,7 @@ function login (navigateTo) {
       // Email verification sent!
       // ...
     });
-  })*/
+  })
 
   
 
