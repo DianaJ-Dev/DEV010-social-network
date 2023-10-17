@@ -598,15 +598,13 @@
            
     }
     .titlePost{
-
         font-family:'Bebas Neue', sans-serif;
-        font-size: 500%;
+        font-size: 350%;
+        text-align: center;
+        padding-top: 15%;
         position: relative;
-        transform: translateX(8%); 
-        color: #DC7633;
-        -webkit-text-stroke: 0.8px black;
-        right:0%;
-        padding-top: 40px; /* Ajusta el valor según tus necesidades */
+        text-shadow: 0px 0px 9px #F6DF0D;
+        left:1%;
     }
     .btn-publicar {  
         font-family: 'Bebas Neue', sans-serif;
@@ -616,7 +614,7 @@
         justify-content: center;
         align-items: center;
         position: absolute;
-        top: 15%;
+        top: 40%;
         left: 42%;
         transform: translateX(210%);
         background-color: #F6DF0D;
