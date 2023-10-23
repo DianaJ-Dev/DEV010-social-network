@@ -29,7 +29,7 @@ function login (navigateTo) {
       alert('la contraseña debe tener mínimo 7 caracteres')
     }
 
-    UsuarioConSesionActiva(emailValue, passwordValue)
+    UsuarioConSesionActiva(emailValue, passwordValue) // se llamo funcion desde  firestore
       .then((userCredential) => {
       // El usuario ha iniciado sesión con éxito
 
@@ -58,7 +58,7 @@ function login (navigateTo) {
   googleImg.src = '../Imagenes/g-logo.png'
   buttonGoogle.appendChild(googleImg)
   buttonGoogle.addEventListener('click', function () {
-    entrarConGoogle()
+    entrarConGoogle() // se llama funcion desde Firebase.Fn
       .then(() => {
         navigateTo('/programmingWall')
       }).catch(() => {

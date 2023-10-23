@@ -34,7 +34,7 @@ function programmingWall (navigateTo) {
       usersWhoLiked: [],
       likesCount: 0
     }
-    createPostProgrammingWall(newPost)
+    createPostProgrammingWall(newPost) // Lo llamamos desde firestore
       .then((docRef) => {
         textAreaPost.value = ''
       })
@@ -69,45 +69,43 @@ function programmingWall (navigateTo) {
       const btnLike = document.createElement('button')
       btnLike.classList.add('btn-like')
       console.log(btnLike)
-      btnLike.textContent = post.likes + ' Me gusta'
+      btnLike.textContent = post.likes + ' Me gusta' // (post.likes) almacenaa la cantidad de me gusta
       btnLike.id = post.id
-      btnLike.setAttribute('usuario-email', post.email)
+      btnLike.setAttribute('usuario-email', post.email) // (setAttribute) metodo para agregar o modificar un atributo
       btnLike.setAttribute('data-likes-count', '0')
       // EVENTO DE LIKE
-      // const usersWhoLiked = [] // Array para almacenar los usuarios que dieron like
       btnLike.addEventListener('click', async (e) => {
         // PARA EVITAR QUE EL BOTON SE ACTUALICE
-        e.preventDefault()
-        const postLikId = e.target.id
-        const userEmail = auth.currentUser.email
+        e.preventDefault() // (preventDefault) evita el comportamiento predeterminado
+        const postLikId = e.target.id // me da el id encontrado en la consola
+        const userEmail = auth.currentUser.email // se asigna con el valor del correo autenticado
         const postRef = doc(db, 'posts', postLikId)
         try {
-          await runTransaction(db, async (transaction) => {
-            const postDoc = await transaction.get(postRef)
+          await runTransaction(db, async (transaction) => { // (runTransaction) funcion de firetore que permite ejecutar una trx
+            const postDoc = await transaction.get(postRef) // (transaction) representa la trx actual
             if (!postDoc.exists()) {
               throw new Error('El documento no existe')
             }
-            const currentLikesCount = postDoc.data().likesCount
-            const currentUsersWhoLiked = postDoc.data().usersWhoLiked || []
+            const currentLikesCount = postDoc.data().likesCount // Obtiene el valor del campo likesCount estas propiedades se traen desde firebase
+            const currentUsersWhoLiked = postDoc.data().usersWhoLiked || [] // firestore identifica el correo de quien le dio likes
             let newLikesCount = currentLikesCount
             if (currentUsersWhoLiked.includes(userEmail)) {
-              newLikesCount--
-              const index = currentUsersWhoLiked.indexOf(userEmail)
+              newLikesCount-- // decrementar en 1
+              const index = currentUsersWhoLiked.indexOf(userEmail) // (indexOf)metodo para buscar en un array y devolver la primera posicion
               currentUsersWhoLiked.splice(index, 1)
             } else {
-              newLikesCount++
+              newLikesCount++ // aumentar en 1
               currentUsersWhoLiked.push(userEmail)
             }
             console.log(newLikesCount)
             console.log(currentUsersWhoLiked)
-            transaction.update(postRef, {
+            transaction.update(postRef, { // (update) metodo de firebase para modificar o actualizar datos de un documento en especifico
               likesCount: newLikesCount,
               usersWhoLiked: currentUsersWhoLiked
             })
             // null
             // Actualiza la interfaz de usuario
-            btnLike.setAttribute('data-likes-count', newLikesCount.toString())
-            // nbtnLike.textContent = `${newLikesCount} Me gusta`
+            btnLike.setAttribute('data-likes-count', newLikesCount.toString()) // metodo para agregar atributos (toString) metodo convertir un objeto en una cadena
           })
           console.log('Se ha dado "Me gusta" a la publicación correctamente.')
         } catch (error) {
@@ -121,7 +119,7 @@ function programmingWall (navigateTo) {
       buttonEdit.classList.add('buttonEdit')
       buttonEdit.addEventListener('click', (e) => {
         const postEditarId = e.target.id // Obtén el ID de la publicación
-        const sectionPost = e.target.parentElement
+        const sectionPost = e.target.parentElement // (ParentElement) Elemento proporciona acceso directo al elemento padre inmediato del elemento actual en el árbol DOM
         console.log(e)
         // Traer texto original
         const textOriginal = sectionPost.querySelector('.contenidoPost p')
@@ -146,7 +144,7 @@ function programmingWall (navigateTo) {
             const updatedData = { // Almacena los datos actualizados
               text: updatedText
             }
-            editPost(postEditarId, updatedData)
+            editPost(postEditarId, updatedData) // editPost viene desde firestore
               .then(() => {
                 const updatedTextElement = document.createElement('p')
                 updatedTextElement.textContent = updatedText
@@ -170,7 +168,7 @@ function programmingWall (navigateTo) {
           const postIdToDelete = e.target.id // Aquí ingresamos al evento.target que es donde lo encontramos en la consola
           console.log(e.target.id)
           console.log(e)
-          deletePost(postIdToDelete)
+          deletePost(postIdToDelete) // firebase me lo da
             .then(() => {
               sectionPost.remove()
               console.log('Post eliminado con éxito')
@@ -192,7 +190,7 @@ function programmingWall (navigateTo) {
   buttonReturn.textContent = 'cerrar'
   buttonReturn.classList.add('btn-cerrar')
   buttonReturn.addEventListener('click', function () {
-    exit()
+    exit() // llamo funcion de firestore
   })
   // append agrega nuevo elemento al contenedor en este caso agrega tittle a section que es el principal
   section.append(title, buttonReturn, textAreaPost, divPostContent, buttonCrear)

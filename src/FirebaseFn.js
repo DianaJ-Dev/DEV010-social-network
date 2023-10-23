@@ -19,12 +19,12 @@ export const UsuarioConSesionActiva = (email, password) => {
 }
 // FUNCION PARA CREAR POST
 export const createPostProgrammingWall = (obj) => {
-  if (auth.currentUser) {
+  if (auth.currentUser) { // valida si hay un usuario autenticado
     const newObj = {
       ...obj,
-      email: auth.currentUser.email
+      email: auth.currentUser.email // agrega nueva propiedad llamada email del usuario autenticado
     }
-    return addDoc(collection(db, 'posts'), newObj)
+    return addDoc(collection(db, 'posts'), newObj) // agrega un documento a coleccion de post
       .then((docRef) => {
         return docRef // Devolver docRef en caso de éxito
       })
@@ -34,9 +34,9 @@ export const createPostProgrammingWall = (obj) => {
       })
   }
 }
-export const q = query(collection(db, 'posts'))
-export const getPosts = (callback) => {
-  onSnapshot(q, callback)
+export const q = query(collection(db, 'posts')) // Consulta de coleccion de post
+export const getPosts = (callback) => { // Ejecuta callback proporcionando datos
+  onSnapshot(q, callback) // metodo de firestore que recibe notificaciones en tiempo real
 }
 // FUNCION PARA CERRAR SESION
 export const exit = () => signOut(auth)

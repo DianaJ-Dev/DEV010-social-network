@@ -36,8 +36,8 @@ function register (navigateTo) {
     if (passwordValue.length < 7) {
       alert('La contraseña debe tener mínimo 7 caracteres') // Sale de la función si la contraseña es demasiado corta
     }
-    // LO TESTEO CON EL MOCK YA QUE ES FIREBASE
-    registrarConCorreoContrasena(emailValue, passwordValue)
+
+    registrarConCorreoContrasena(emailValue, passwordValue) // funcion desde Firebase
       .then((userCredential) => {
         // El usuario se creó con éxito
         const user = userCredential.user
